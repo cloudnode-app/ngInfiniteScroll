@@ -46,7 +46,7 @@ mod.directive 'infiniteScroll', ['$rootScope', '$window', '$interval', 'THROTTLE
     # with a boolean that is set to true when the function is
     # called in order to throttle the function call.
     handler = ->
-      if elem[0].nodeName == 'MD-CONTENT'
+      if elem[0].nodeName != 'MD-CONTENT'
         if container == windowElement
           containerBottom = height(container) + pageYOffset(container[0].document.documentElement)
           elementBottom = offsetTop(elem) + height(elem)

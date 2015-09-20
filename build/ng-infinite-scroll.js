@@ -50,7 +50,7 @@ mod.directive('infiniteScroll', [
         };
         handler = function() {
           var containerBottom, containerTopOffset, elementBottom, remaining, shouldScroll;
-          if (elem[0].nodeName === 'MD-CONTENT') {
+          if (elem[0].nodeName !== 'MD-CONTENT') {
             if (container === windowElement) {
               containerBottom = height(container) + pageYOffset(container[0].document.documentElement);
               elementBottom = offsetTop(elem) + height(elem);
