@@ -46,21 +46,24 @@ mod.directive 'infiniteScroll', ['$rootScope', '$window', '$interval', 'THROTTLE
     # with a boolean that is set to true when the function is
     # called in order to throttle the function call.
     handler = ->
-      if container == windowElement
-        containerBottom = height(container) + pageYOffset(container[0].document.documentElement)
-        elementBottom = offsetTop(elem) + height(elem)
+      if elem[0].nodeName == 'MD-CONTENT'
+        if container == windowElement
+          containerBottom = height(container) + pageYOffset(container[0].document.documentElement)
+          elementBottom = offsetTop(elem) + height(elem)
+        else
+          containerBottom = height(container)
+          containerTopOffset = 0
+          if offsetTop(container) != undefined
+            containerTopOffset = offsetTop(container)
+          elementBottom = offsetTop(elem) - containerTopOffset + height(elem)
+
+        if(useDocumentBottom)
+          elementBottom = height((elem[0].ownerDocument || elem[0].document).documentElement)
+
+        remaining = elementBottom - containerBottom
+        shouldScroll = remaining <= height(container) * scrollDistance + 1
       else
-        containerBottom = height(container)
-        containerTopOffset = 0
-        if offsetTop(container) != undefined
-          containerTopOffset = offsetTop(container)
-        elementBottom = offsetTop(elem) - containerTopOffset + height(elem)
-
-      if(useDocumentBottom)
-        elementBottom = height((elem[0].ownerDocument || elem[0].document).documentElement)
-
-      remaining = elementBottom - containerBottom
-      shouldScroll = remaining <= height(container) * scrollDistance + 1
+        shouldScroll = elem[0].scrollHeight == elem[0].scrollTop + elem[0].offsetHeight
 
       if shouldScroll
         checkWhenEnabled = true
